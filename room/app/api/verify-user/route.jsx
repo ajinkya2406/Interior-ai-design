@@ -17,7 +17,7 @@ export async function POST(req){
     if(UserInfo?.length==0){
         const SaveResult = await db.insert(Users)
         .values({
-            name:user?.name || "Unknown User",
+            name:user?.Username || "Unknown User",
             email:user?.primaryEmailAddress.emailAddress,
             imageUrl:user?.imageUrl
         }).returning({Users})

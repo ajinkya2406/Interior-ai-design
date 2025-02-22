@@ -1,11 +1,13 @@
 "use client"
 import { useUser } from '@clerk/nextjs'
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { UserDetailsContext } from './_context/UserDetailsContext';
 
 function Provider({children}) {
 
     const {user}=useUser();
+    const [userDetails, setUserDetails] = useState({});
     useEffect(()=>{
         user&&VerifyUser();
     },[user])
@@ -17,13 +19,16 @@ function Provider({children}) {
         const dataResult = await axios.post('/api/verify-user',{
             user:user
         });
-        console.log(dataResult.data)
+        setUserDetails(dataResult.data.result);
+       
     }
 
   return (
+    <UserDetailsContext.Provider value={{userDetails, setUserDetails}}>
     <div>
         {children}
     </div>
+    </UserDetailsContext.Provider>
   )
 }
 
